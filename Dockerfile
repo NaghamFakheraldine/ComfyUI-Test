@@ -7,11 +7,19 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Clone ComfyUI repository
-RUN git clone https://github.com/NaghamFakheraldine/ComfyUI.git
+RUN git clone https://github.com/comfyanonymous/ComfyUI.git
 
-# Install Python dependencies
+# Clone ComfyUI-Manager into custom_nodes directory
 WORKDIR /ComfyUI
-RUN pip install -r requirements.txt
+RUN mkdir -p custom_nodes && \
+    cd custom_nodes && \
+    git clone https://github.com/ltdrdata/ComfyUI-Manager comfyui-manager
+
+# Install Python dependencies for both ComfyUI and ComfyUI-Manager
+WORKDIR /ComfyUI
+RUN pip install -r requirements.txt && \
+    cd custom_nodes/comfyui-manager && \
+    pip install -r requirements.txt
 
 # Create start script
 RUN echo '#!/bin/bash\ncd /ComfyUI\npython main.py --listen' > /start.sh
