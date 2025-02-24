@@ -7,14 +7,14 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Clone ComfyUI repository
-RUN git clone https://github.com/comfyanonymous/ComfyUI.git
+RUN git clone https://github.com/NaghamFakheraldine/ComfyUI.git
 
 # Install Python dependencies
 WORKDIR /ComfyUI
 RUN pip install -r requirements.txt
 
 # Create start script
-RUN echo '#!/bin/bash\ncd /ComfyUI\npython main.py' > /start.sh
+RUN echo '#!/bin/bash\ncd /ComfyUI\npython main.py --listen' > /start.sh
 RUN chmod +x /start.sh
 
 # Set the start command
